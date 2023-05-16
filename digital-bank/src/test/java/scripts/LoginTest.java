@@ -47,6 +47,8 @@ public class LoginTest {
         assertEquals(homePage.getPageTitle(), expectedTitle);
         assertEquals(homePage.getWelcomeMessage(), expectedWelcomeMessage);
 
+        takeScreenshot();
+
         LoginPage newLoginPage = homePage.logout();
         assertEquals(newLoginPage.getLogOutMessage(), expectedLogOutMessage);
     }
