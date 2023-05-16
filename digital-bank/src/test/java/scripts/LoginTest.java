@@ -6,17 +6,20 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import pages.HomePage;
+import pages.LoginPage;
 
 import java.time.Duration;
 
+import static org.testng.Assert.assertEquals;
+
 public class LoginTest {
     private WebDriver driver;
-    private Actions actions;
+
     @BeforeTest
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
@@ -26,16 +29,27 @@ public class LoginTest {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        actions = new Actions(driver);
-        String baseUrl = "http://magento-demo.lexiconn.com/";
+        String baseUrl = "http://digitalbank.upcamp.io/bank/";
         driver.get(baseUrl);
     }
 
     @Test(dataProvider = "login", dataProviderClass = dataProviders.LoginData.class)
-    public void testLogin(String email, String password) {
-        String expectedTitle = "MY DASHBOARD";
-    }
+    public void testLogin(String username, String password, String name) {
+        String expectedTitle = "Dashboard";
+        String expectedWelcomeMessage = "Welcome " + name;
+        String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
+        String expectedLogOutMessage = "Success Logout completed.\n" + "×";
 
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.setUsernameAndPassword(username, password);
+        HomePage homePage = loginPage.clickLoginButton();
+        assertEquals(homePage.getCurrentUrl(), expectedUrl);
+        assertEquals(homePage.getPageTitle(), expectedTitle);
+        assertEquals(homePage.getWelcomeMessage(), expectedWelcomeMessage);
+
+        LoginPage newLoginPage = homePage.logout();
+        assertEquals(newLoginPage.getLogOutMessage(), expectedLogOutMessage);
+    }
 
     @AfterTest
     public void tearDown() {
