@@ -23,7 +23,7 @@ public class Header extends BasePage {
         super(driver);
     }
 
-    @Step("Get welcome message AAAAAAA")
+    @Step("Get welcome message AAAAAAA   otro test")
     public String getWelcomeMessage() {
         return welcomeMessage.getText();
     }
