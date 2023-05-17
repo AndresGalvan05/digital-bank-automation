@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
+import utils.Constants;
 
 import java.time.Duration;
 
@@ -29,8 +30,7 @@ public class LoginTest {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        String baseUrl = "http://digitalbank.upcamp.io/bank/";
-        driver.get(baseUrl);
+        driver.get(Constants.urlBase);
     }
 
     @Test(dataProvider = "login", dataProviderClass = dataProviders.LoginData.class)
