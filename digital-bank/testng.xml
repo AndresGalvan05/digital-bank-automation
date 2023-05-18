@@ -2,7 +2,7 @@
 <suite name="All suites">
    
     <suite-files>
-        <suite-file path="src/test/java/suites/savingsSearch.xml"/>
+        <suite-file path="src/test/java/suites/Search.xml"/>
     </suite-files>
 
 </suite>
