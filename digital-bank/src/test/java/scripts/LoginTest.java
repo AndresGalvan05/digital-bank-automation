@@ -6,20 +6,20 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import pages.HomePage;
+import pages.LoginPage;
+import utils.Constants;
 
 import java.time.Duration;
 
-import static org.testng.Assert.*;
 import static org.testng.Assert.assertEquals;
 
-public class AddProductToCartTest {
+public class LoginTest {
     private WebDriver driver;
-    private Actions actions;
 
     @BeforeTest
     public void setUp() {
@@ -30,30 +30,28 @@ public class AddProductToCartTest {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        actions = new Actions(driver);
-        String baseUrl = "http://magento-demo.lexiconn.com/";
-        driver.get(baseUrl);
+        driver.get(Constants.urlBase);
     }
 
-//    @Test(dataProvider = "products", dataProviderClass = dataProviders.ProductsData.class)
-//    public void testAddToCart(String subCategory, String product, String productColor, String productSize) {
-//        String expectedTitle = "SHOPPING CART";
-//
-//        CategoryMenu categoryMenu = new CategoryMenu(driver, actions);
-//
-//        ProductSubCategoryPage subCategoryPage = categoryMenu.clickMenSubCategory(subCategory);
-//        assertEquals(subCategoryPage.getSubCategoryPageTitle(), subCategory.toUpperCase());
-//
-//        ProductPage productPage = subCategoryPage.selectProduct(product);
-//        assertEquals(productPage.getProductPageTitle(), product);
-//
-//        productPage.selectColorAndSize(productColor, productSize);
-//        CartPage cartPage = productPage.addToCart();
-//        assertEquals(cartPage.getCartPageTitle(), expectedTitle);
-//        assertEquals(cartPage.getProductName(product), product);
-//
-//        takeScreenshot();
-//    }
+    @Test(dataProvider = "login", dataProviderClass = dataProviders.LoginData.class)
+    public void testLogin(String username, String password, String name) {
+        String expectedTitle = "Dashboard";
+        String expectedWelcomeMessage = "Welcome " + name;
+        String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
+        String expectedLogOutMessage = "Success Logout completed.\n" + "×";
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.setUsernameAndPassword(username, password);
+        HomePage homePage = loginPage.clickLoginButton();
+        assertEquals(homePage.getCurrentUrl(), expectedUrl);
+        assertEquals(homePage.getPageTitle(), expectedTitle);
+        assertEquals(homePage.getWelcomeMessage(), expectedWelcomeMessage);
+
+        takeScreenshot();
+
+        LoginPage newLoginPage = homePage.logout();
+        assertEquals(newLoginPage.getLogOutMessage(), expectedLogOutMessage);
+    }
 
     @AfterTest
     public void tearDown() {
