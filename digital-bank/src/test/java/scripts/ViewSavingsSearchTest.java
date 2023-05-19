@@ -36,7 +36,6 @@ public class ViewSavingsSearchTest {
     }
 
     @Test(dataProvider = "search", dataProviderClass = dataProviders.SearchData.class)
-
     public void testSearchSavings(String titleSavings ,String searchValue, String value) {
         String expectedTitle = "Dashboard";
         String expectedWelcomeMessage = "Welcome " + Constants.nameAndy;
@@ -45,6 +44,7 @@ public class ViewSavingsSearchTest {
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
+
         HomePage homePage = loginPage.clickLoginButton();
         assertEquals(homePage.getCurrentUrl(), expectedUrl);
         assertEquals(homePage.getPageTitle(), expectedTitle);
