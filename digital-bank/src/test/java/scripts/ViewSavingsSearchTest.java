@@ -37,14 +37,14 @@ public class ViewSavingsSearchTest {
 
     @Test(dataProvider = "search", dataProviderClass = dataProviders.SearchData.class)
 
-    public void testSearchSavings(String username, String password, String name, String titleSavings ,String searchValue, String value) {
+    public void testSearchSavings(String name, String titleSavings ,String searchValue, String value) {
         String expectedTitle = "Dashboard";
         String expectedWelcomeMessage = "Welcome " + name;
         String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
         String expectedLogOutMessage = "Success Logout completed.\n" + "×";
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.setUsernameAndPassword(username, password);
+        loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
         HomePage homePage = loginPage.clickLoginButton();
         assertEquals(homePage.getCurrentUrl(), expectedUrl);
         assertEquals(homePage.getPageTitle(), expectedTitle);
