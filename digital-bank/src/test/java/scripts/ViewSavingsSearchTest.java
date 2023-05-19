@@ -37,9 +37,9 @@ public class ViewSavingsSearchTest {
 
     @Test(dataProvider = "search", dataProviderClass = dataProviders.SearchData.class)
 
-    public void testSearchSavings(String name, String titleSavings ,String searchValue, String value) {
+    public void testSearchSavings(String titleSavings ,String searchValue, String value) {
         String expectedTitle = "Dashboard";
-        String expectedWelcomeMessage = "Welcome " + name;
+        String expectedWelcomeMessage = "Welcome " + Constants.nameAndy;
         String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
         String expectedLogOutMessage = "Success Logout completed.\n" + "×";
 
