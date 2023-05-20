@@ -27,15 +27,15 @@ public class CheckingPage extends BasePage {
         super(driver);
     }
 
-    public void completeFormNewChecking() {
+    public void completeFormNewChecking(String nameaccount, String deposit) {
         standardCheckingButton.click();
         individualButton.click();
         accountName.click();
         accountName.clear();
-        accountName.sendKeys("Prueba1");
+        accountName.sendKeys(nameaccount);
         initialDeposit.click();
         initialDeposit.clear();
-        initialDeposit.sendKeys("40000");
+        initialDeposit.sendKeys(deposit);
     }
 
     public void resetForm() {

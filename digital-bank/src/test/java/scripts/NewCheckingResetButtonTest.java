@@ -36,7 +36,7 @@ public class NewCheckingResetButtonTest {
 
 
     @Test (dataProvider = "new checking", dataProviderClass = dataProviders.NewCheckingData.class)
-    public void newCheckingResetButton(String username, String password, String name) {
+    public void newCheckingResetButton(String username, String password, String name, String nameaccount, String deposit) {
         String expectedTitle = "Dashboard";
         String expectedWelcomeMessage = "Welcome " + name;
         String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
@@ -49,7 +49,7 @@ public class NewCheckingResetButtonTest {
         assertEquals(homePage.getWelcomeMessage(), expectedWelcomeMessage);
         homePage.goToNewChecking();
         CheckingPage checkingPage = new CheckingPage(driver);
-        checkingPage.completeFormNewChecking();
+        checkingPage.completeFormNewChecking(nameaccount, deposit);
         checkingPage.resetForm();
 
     }
