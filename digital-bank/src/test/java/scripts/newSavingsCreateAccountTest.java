@@ -1,5 +1,6 @@
 package scripts;
 
+import dataProviders.AccountData;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -12,13 +13,15 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
+import pages.NewSavingsPage;
 import utils.Constants;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
-public class LoginTest {
+public class newSavingsCreateAccountTest {
+
     private WebDriver driver;
 
     @BeforeTest
@@ -33,25 +36,36 @@ public class LoginTest {
         driver.get(Constants.urlBase);
     }
 
-    @Test(dataProvider = "login", dataProviderClass = dataProviders.LoginData.class)
-    public void testLogin(String username, String password, String name) {
+    @Test(dataProvider = "account", dataProviderClass = AccountData.class)
+
+    public void testSearchSavings(String titleSavings ,String name, String value) {
         String expectedTitle = "Dashboard";
-        String expectedWelcomeMessage = "Welcome " + name;
+        String expectedWelcomeMessage = "Welcome " + Constants.nameAndy;
         String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
         String expectedLogOutMessage = "Success Logout completed.\n" + "×";
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.setUsernameAndPassword(username, password);
+        loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
+
         HomePage homePage = loginPage.clickLoginButton();
         assertEquals(homePage.getCurrentUrl(), expectedUrl);
         assertEquals(homePage.getPageTitle(), expectedTitle);
         assertEquals(homePage.getWelcomeMessage(), expectedWelcomeMessage);
 
+        NewSavingsPage newSavingsPage = new NewSavingsPage(driver);
+        newSavingsPage.saving();
+        newSavingsPage.savingMenu();
+        assertEquals(newSavingsPage.getPageTitle(), titleSavings);
+        newSavingsPage.individualRadioBtn();
+        newSavingsPage.enterTextInNameInput(name);
+        newSavingsPage.enterTextInOpeningBalanceInput(value);
+        newSavingsPage.clickNewSavingsSubmitButton();
         takeScreenshot();
+        assertEquals(newSavingsPage.getPageTitle(), titleSavings);
 
         LoginPage newLoginPage = homePage.logout();
         assertEquals(newLoginPage.getLogOutMessage(), expectedLogOutMessage);
-    }
+   }
 
     @AfterTest
     public void tearDown() {
