@@ -1,6 +1,6 @@
 package scripts;
 
-import dataProviders.AccountData;
+import dataProviders.SavingsData;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -36,9 +36,9 @@ public class newSavingsCreateAccountTest {
         driver.get(Constants.urlBase);
     }
 
-    @Test(dataProvider = "account", dataProviderClass = AccountData.class)
+    @Test(dataProvider = "account", dataProviderClass = SavingsData.class)
 
-    public void testSearchSavings(String titleSavings ,String name, String value) {
+    public void testSearchSavings(String titleSavings ,String name, String value, String message) {
         String expectedTitle = "Dashboard";
         String expectedWelcomeMessage = "Welcome " + Constants.nameAndy;
         String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
@@ -56,13 +56,13 @@ public class newSavingsCreateAccountTest {
         newSavingsPage.saving();
         newSavingsPage.savingMenu();
         assertEquals(newSavingsPage.getPageTitle(), titleSavings);
+        newSavingsPage.moneyMarketRadioBtn();
         newSavingsPage.individualRadioBtn();
         newSavingsPage.enterTextInNameInput(name);
         newSavingsPage.enterTextInOpeningBalanceInput(value);
         newSavingsPage.clickNewSavingsSubmitButton();
+        assertEquals(newSavingsPage.getNewAccountMessage(), message);
         takeScreenshot();
-        assertEquals(newSavingsPage.getPageTitle(), titleSavings);
-
         LoginPage newLoginPage = homePage.logout();
         assertEquals(newLoginPage.getLogOutMessage(), expectedLogOutMessage);
    }

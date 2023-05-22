@@ -12,23 +12,23 @@ public class NewSavingsPage extends BasePage {
 
     @FindBy(id = "savings-menu")
     private WebElement savingsMenu;
-
     @FindBy(id = "new-savings-menu-item")
     private WebElement newSavingsMenu;
-
     @FindBy(xpath = "//strong[contains(text(),'New Savings Account')]")
     private WebElement newSavingsAccount;
-
+    @FindBy(id = "Money Market")
+    private WebElement moneyMarketRadioButton;
     @FindBy(id = "Individual")
     private WebElement individualRadioBtn;
-
     @FindBy(id = "name")
     private WebElement nameInput;
     @FindBy(id = "openingBalance")
     private WebElement openingBalanceInput;
-
     @FindBy(id = "newSavingsSubmit")
     private WebElement newSavingsSubmitButton;
+    @FindBy(id = "new-account-msg")
+    private WebElement newAccountMessage;
+
 
     @Step("Click on savings button")
     public void saving() {
@@ -41,6 +41,10 @@ public class NewSavingsPage extends BasePage {
     @Step("Check the page title assert")
     public String getPageTitle() {
         return newSavingsAccount.getText();
+    }
+    @Step("Click on individual radio button ")
+    public void moneyMarketRadioBtn() {
+        moneyMarketRadioButton.click();
     }
     @Step("Click on individual radio button ")
     public void individualRadioBtn() {
@@ -56,9 +60,13 @@ public class NewSavingsPage extends BasePage {
         openingBalanceInput.clear();
         openingBalanceInput.sendKeys(text);
     }
-    @Step("Press Enter to submit data")
+    @Step("Press 'Submit' to submit data")
     public void clickNewSavingsSubmitButton() {
         newSavingsSubmitButton.click();
+    }
+    @Step("Check the page title assert")
+    public String getNewAccountMessage() {
+        return newAccountMessage.getText();
     }
 
 }
