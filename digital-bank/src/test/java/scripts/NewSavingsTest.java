@@ -6,20 +6,23 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import pages.HomePage;
+import pages.LoginPage;
+import pages.NewSavingsPage;
+import pages.ViewSavingsPage;
+import utils.Constants;
 
 import java.time.Duration;
 
-import static org.testng.Assert.*;
 import static org.testng.Assert.assertEquals;
 
-public class AddProductToCartTest {
+public class NewSavingsTest {
+
     private WebDriver driver;
-    private Actions actions;
 
     @BeforeTest
     public void setUp() {
@@ -30,31 +33,33 @@ public class AddProductToCartTest {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        actions = new Actions(driver);
-        String baseUrl = "http://magento-demo.lexiconn.com/";
-        driver.get(baseUrl);
+        driver.get(Constants.urlBase);
     }
 
-//    @Test(dataProvider = "products", dataProviderClass = dataProviders.ProductsData.class)
-//    public void testAddToCart(String subCategory, String product, String productColor, String productSize) {
-//        String expectedTitle = "SHOPPING CART";
-//
-//        CategoryMenu categoryMenu = new CategoryMenu(driver, actions);
-//
-//        ProductSubCategoryPage subCategoryPage = categoryMenu.clickMenSubCategory(subCategory);
-//        assertEquals(subCategoryPage.getSubCategoryPageTitle(), subCategory.toUpperCase());
-//
-//        ProductPage productPage = subCategoryPage.selectProduct(product);
-//        assertEquals(productPage.getProductPageTitle(), product);
-//
-//        productPage.selectColorAndSize(productColor, productSize);
-//        CartPage cartPage = productPage.addToCart();
-//        assertEquals(cartPage.getCartPageTitle(), expectedTitle);
-//        assertEquals(cartPage.getProductName(product), product);
-//
-//        takeScreenshot();
-//    }
 
+    @Test(dataProvider = "newSavings", dataProviderClass = dataProviders.NewSavingsData.class)
+    public void NewSavingsTest(String accountName, String initialDeposit) {
+        String titleNewSavings= "Create Savings";
+        String titleViewSavings= "View Savings Accounts";
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
+        HomePage homePage = loginPage.clickLoginButton();
+
+        NewSavingsPage newSavingsPage = new NewSavingsPage(driver);
+        newSavingsPage.clickSavingsMenu();
+        newSavingsPage.newSavings();
+        assertEquals(newSavingsPage.pageTitle(),titleNewSavings);
+        newSavingsPage.clickStandardSavings();
+        newSavingsPage.clickIndividualAccount();
+        newSavingsPage.accountName(accountName);
+        newSavingsPage.initialDeposit(initialDeposit);
+        ViewSavingsPage viewSavingsPage= newSavingsPage.clickSubmitButton();
+        assertEquals(viewSavingsPage.pageTitle(),titleViewSavings );
+
+        takeScreenshot();
+
+        homePage.logout();
+    }
     @AfterTest
     public void tearDown() {
         try {
@@ -65,7 +70,6 @@ public class AddProductToCartTest {
             System.out.println("Exception while closing the driver " + e.getMessage());
         }
     }
-
     @Attachment(type = "image/png")
     @AfterMethod(alwaysRun = true)
     public byte[] takeScreenshot() {
@@ -79,4 +83,7 @@ public class AddProductToCartTest {
         }
         return image;
     }
+
+
+
 }
