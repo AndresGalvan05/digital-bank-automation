@@ -3,10 +3,10 @@ package dataProviders;
 import org.testng.annotations.DataProvider;
 
 public class NewCheckingData {
-        @DataProvider(name = "new checking")
+        @DataProvider(name = "newChecking")
         public static Object[][] getNewCheckingData() {
             return new Object[][]{
-                    {"AndyBadin@gmail.com", "1234ASdf", "Andy", "Prueba", "40000"},
+                    {"Prueba", "40000"},
             };
         }
     }

@@ -35,22 +35,27 @@ public class NewCheckingResetButtonTest {
     }
 
 
-    @Test (dataProvider = "new checking", dataProviderClass = dataProviders.NewCheckingData.class)
-    public void newCheckingResetButton(String username, String password, String name, String nameaccount, String deposit) {
-        String expectedTitle = "Dashboard";
-        String expectedWelcomeMessage = "Welcome " + name;
-        String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
+    @Test (dataProvider = "newChecking", dataProviderClass = dataProviders.NewCheckingData.class)
+    public void newCheckingResetButton(String nameAccount, String deposit) {
+    String inputVacio = "";
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.setUsernameAndPassword(username, password);
+        loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
         HomePage homePage = loginPage.clickLoginButton();
-        assertEquals(homePage.getCurrentUrl(), expectedUrl);
-        assertEquals(homePage.getPageTitle(), expectedTitle);
-        assertEquals(homePage.getWelcomeMessage(), expectedWelcomeMessage);
-        homePage.goToNewChecking();
-        CheckingPage checkingPage = new CheckingPage(driver);
-        checkingPage.completeFormNewChecking(nameaccount, deposit);
-        checkingPage.resetForm();
+       CheckingPage checkingPage = homePage.goToNewChecking();
+        checkingPage.completeFormNewChecking(nameAccount, deposit);
+        assertEquals(checkingPage.getAccountName(),nameAccount);
+        assertEquals(checkingPage.getDeposit(), deposit);
+
+        takeScreenshot();
+
+       checkingPage.resetForm();
+        assertEquals(checkingPage.getAccountName(), inputVacio);
+        assertEquals(checkingPage.getDeposit(), inputVacio);
+
+        takeScreenshot();
+
+        homePage.logout();
 
     }
 
