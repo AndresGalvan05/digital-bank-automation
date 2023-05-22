@@ -42,7 +42,7 @@ public class newSavingsCreateAccountTest {
     public void testSearchSavings(String name, String value) {
         String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
         String expectedTitle = "New Savings Account";
-        String expectedSuccessfullyMessage = "Successfully created new Money Market account named ahorros";
+        String expectedSuccessfullyMessage = "Successfully created new Money Market account named " + name;
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
