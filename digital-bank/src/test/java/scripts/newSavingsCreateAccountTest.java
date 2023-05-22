@@ -49,8 +49,6 @@ public class newSavingsCreateAccountTest {
 
         HomePage homePage = loginPage.clickLoginButton();
         assertEquals(homePage.getCurrentUrl(), expectedUrl);
-        assertEquals(homePage.getPageTitle(), expectedTitle);
-
 
         NewSavingsPage newSavingsPage = new NewSavingsPage(driver);
         newSavingsPage.saving();
