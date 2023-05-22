@@ -57,7 +57,7 @@ public class newSavingsCreateAccountTest {
         newSavingsPage.savingMenu();
         assertEquals(newSavingsPage.getPageTitle(), titleSavings);
         newSavingsPage.moneyMarketRadioBtn();
-        newSavingsPage.individualRadioBtn();
+        newSavingsPage.jointRadioBtn();
         newSavingsPage.enterTextInNameInput(name);
         newSavingsPage.enterTextInOpeningBalanceInput(value);
         newSavingsPage.clickNewSavingsSubmitButton();

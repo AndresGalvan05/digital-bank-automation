@@ -18,8 +18,9 @@ public class NewSavingsPage extends BasePage {
     private WebElement newSavingsAccount;
     @FindBy(id = "Money Market")
     private WebElement moneyMarketRadioButton;
-    @FindBy(id = "Individual")
-    private WebElement individualRadioBtn;
+    @FindBy(id = "Joint")
+    private WebElement jointRadioButton;
+
     @FindBy(id = "name")
     private WebElement nameInput;
     @FindBy(id = "openingBalance")
@@ -47,8 +48,8 @@ public class NewSavingsPage extends BasePage {
         moneyMarketRadioButton.click();
     }
     @Step("Click on individual radio button ")
-    public void individualRadioBtn() {
-        individualRadioBtn.click();
+    public void jointRadioBtn() {
+        jointRadioButton.click();
     }
     @Step("Enter name in input field")
     public void enterTextInNameInput(String text) {
