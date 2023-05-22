@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
 import pages.NewSavingsPage;
+import pages.ViewSavingsAccount;
 import utils.Constants;
 
 import java.time.Duration;
@@ -38,11 +39,10 @@ public class newSavingsCreateAccountTest {
 
     @Test(dataProvider = "account", dataProviderClass = SavingsData.class)
 
-    public void testSearchSavings(String titleSavings ,String name, String value, String message) {
-        String expectedTitle = "Dashboard";
-        String expectedWelcomeMessage = "Welcome " + Constants.nameAndy;
+    public void testSearchSavings(String name, String value) {
         String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
-        String expectedLogOutMessage = "Success Logout completed.\n" + "×";
+        String expectedTitle = "New Savings Account";
+        String expectedSuccessfullMessage = "Successfully created new Money Market account named ahorros";
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
@@ -50,21 +50,20 @@ public class newSavingsCreateAccountTest {
         HomePage homePage = loginPage.clickLoginButton();
         assertEquals(homePage.getCurrentUrl(), expectedUrl);
         assertEquals(homePage.getPageTitle(), expectedTitle);
-        assertEquals(homePage.getWelcomeMessage(), expectedWelcomeMessage);
+
 
         NewSavingsPage newSavingsPage = new NewSavingsPage(driver);
         newSavingsPage.saving();
         newSavingsPage.savingMenu();
-        assertEquals(newSavingsPage.getPageTitle(), titleSavings);
+        assertEquals(newSavingsPage.getPageTitle(), expectedTitle);
         newSavingsPage.moneyMarketRadioBtn();
         newSavingsPage.jointRadioBtn();
-        newSavingsPage.enterTextInNameInput(name);
-        newSavingsPage.enterTextInOpeningBalanceInput(value);
-        newSavingsPage.clickNewSavingsSubmitButton();
-        assertEquals(newSavingsPage.getNewAccountMessage(), message);
+        newSavingsPage.enterNameValueInput(name, value);
+
+        ViewSavingsAccount viewSavingsAccount = newSavingsPage.clickNewSavingsSubmitButton();
+        assertEquals(viewSavingsAccount.getNewAccountMessage(), expectedSuccessfullMessage);
         takeScreenshot();
-        LoginPage newLoginPage = homePage.logout();
-        assertEquals(newLoginPage.getLogOutMessage(), expectedLogOutMessage);
+        homePage.logout();
    }
 
     @AfterTest

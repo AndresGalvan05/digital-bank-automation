@@ -27,8 +27,7 @@ public class NewSavingsPage extends BasePage {
     private WebElement openingBalanceInput;
     @FindBy(id = "newSavingsSubmit")
     private WebElement newSavingsSubmitButton;
-    @FindBy(id = "new-account-msg")
-    private WebElement newAccountMessage;
+
 
 
     @Step("Click on savings button")
@@ -51,23 +50,20 @@ public class NewSavingsPage extends BasePage {
     public void jointRadioBtn() {
         jointRadioButton.click();
     }
-    @Step("Enter name in input field")
-    public void enterTextInNameInput(String text) {
+    @Step("Enter name and value input fields")
+    public void enterNameValueInput(String name, String value) {
         nameInput.clear();
-        nameInput.sendKeys(text);
-    }
-    @Step("Enter opening value in input field")
-    public void enterTextInOpeningBalanceInput(String text) {
+        nameInput.sendKeys(name);
         openingBalanceInput.clear();
-        openingBalanceInput.sendKeys(text);
+        openingBalanceInput.sendKeys(value);
     }
+
     @Step("Press 'Submit' to submit data")
-    public void clickNewSavingsSubmitButton() {
+    public ViewSavingsAccount clickNewSavingsSubmitButton() {
         newSavingsSubmitButton.click();
+        return new ViewSavingsAccount(driver);
+
     }
-    @Step("Check the page title assert")
-    public String getNewAccountMessage() {
-        return newAccountMessage.getText();
-    }
+
 
 }
