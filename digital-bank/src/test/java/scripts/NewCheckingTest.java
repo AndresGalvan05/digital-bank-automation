@@ -6,20 +6,20 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
+import pages.NewCheckingPage;
+import pages.HomePage;
+import pages.LoginPage;
+import pages.ViewCheckingPage;
+import utils.Constants;
 import java.time.Duration;
-
-import static org.testng.Assert.*;
 import static org.testng.Assert.assertEquals;
 
-public class AddProductToCartTest {
+public class NewCheckingTest {
     private WebDriver driver;
-    private Actions actions;
 
     @BeforeTest
     public void setUp() {
@@ -30,30 +30,33 @@ public class AddProductToCartTest {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        actions = new Actions(driver);
-        String baseUrl = "http://magento-demo.lexiconn.com/";
-        driver.get(baseUrl);
+        driver.get(Constants.urlBase);
     }
 
-//    @Test(dataProvider = "products", dataProviderClass = dataProviders.ProductsData.class)
-//    public void testAddToCart(String subCategory, String product, String productColor, String productSize) {
-//        String expectedTitle = "SHOPPING CART";
-//
-//        CategoryMenu categoryMenu = new CategoryMenu(driver, actions);
-//
-//        ProductSubCategoryPage subCategoryPage = categoryMenu.clickMenSubCategory(subCategory);
-//        assertEquals(subCategoryPage.getSubCategoryPageTitle(), subCategory.toUpperCase());
-//
-//        ProductPage productPage = subCategoryPage.selectProduct(product);
-//        assertEquals(productPage.getProductPageTitle(), product);
-//
-//        productPage.selectColorAndSize(productColor, productSize);
-//        CartPage cartPage = productPage.addToCart();
-//        assertEquals(cartPage.getCartPageTitle(), expectedTitle);
-//        assertEquals(cartPage.getProductName(product), product);
-//
-//        takeScreenshot();
-//    }
+    @Test(dataProvider = "newChecking", dataProviderClass = dataProviders.NewCheckingData.class)
+    public void NewCheckingTest(String accountName, String initialDeposit) {
+        String titleNewChecking= "Create Checking";
+        String titleViewChecking= "View Checking Accounts";
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
+        HomePage homePage = loginPage.clickLoginButton();
+
+        NewCheckingPage newCheckingPage = new NewCheckingPage(driver);
+        newCheckingPage.clickCheckingMenu();
+        newCheckingPage.clickNewChecking();
+        assertEquals(newCheckingPage.pageTitle(),titleNewChecking);
+        newCheckingPage.clickStandardChecking();
+        newCheckingPage.clickIndividualAccount();
+        newCheckingPage.accountName(accountName);
+        newCheckingPage.initialDeposit(initialDeposit);
+        ViewCheckingPage viewCheckingPage =  newCheckingPage.clickSubmitButton();
+        assertEquals(viewCheckingPage.pageTitle(),titleViewChecking );
+
+        takeScreenshot();
+
+        homePage.logout();
+
+    }
 
     @AfterTest
     public void tearDown() {
@@ -66,7 +69,7 @@ public class AddProductToCartTest {
         }
     }
 
-    @Attachment(type = "image/png")
+        @Attachment(type = "image/png")
     @AfterMethod(alwaysRun = true)
     public byte[] takeScreenshot() {
         byte[] image = new byte[0];
@@ -79,4 +82,5 @@ public class AddProductToCartTest {
         }
         return image;
     }
+
 }
