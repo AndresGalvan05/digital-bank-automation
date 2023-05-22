@@ -40,7 +40,7 @@ public class ViewCheckingToggleButtonTest {
         String expectedTitle = "View Checking Accounts";
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
+        loginPage.setUsernameAndPassword(Constants.userAndres, Constants.passwordAndres);
 
         HomePage homePage = loginPage.clickLoginButton();
 

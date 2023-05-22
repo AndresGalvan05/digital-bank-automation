@@ -6,8 +6,8 @@ public class ViewCheckingAccountsData {
     @DataProvider(name = "viewCheckingAccounts")
     public static Object[][] getCheckingAccounts() {
         return new Object[][]{
-                {"2", "2023-05-03 03:54", "Bills & Utilities", "845334067 (CHK) - Lockman and Sons Mortgage", "$-1514.24", "$469.04"},
-                {"3", "2023-05-07 05:49", "Bills & Utilities", "845333931 (CHK) - Emmerich-Watsica Mortgage", "$-1606.98", "$396.04"},
+                {"2", "2023-05-22 17:22", "Income", "845334864 (DPT) - Deposit", "$7500.00", "$7500.00"},
+                {"3", "2023-05-22 17:20", "Income", "845334859 (DPT) - Deposit", "$100.00", "$100.00"},
         };
     }
 }
