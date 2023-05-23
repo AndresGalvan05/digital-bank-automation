@@ -18,13 +18,6 @@ public class HomePage extends BasePage {
     @FindBy(css = ".user-menu a[href=\"/bank/logout\"]")
     private WebElement logoutButton;
 
-    @FindBy(id = "checking-menu")
-    private WebElement menuChecking;
-
-    @FindBy(id = "new-checking-menu-item")
-    private WebElement newCheckingButton;
-
-
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -49,11 +42,5 @@ public class HomePage extends BasePage {
         avatar.click();
         logoutButton.click();
         return new LoginPage(driver);
-    }
-
-    public CheckingPage goToNewChecking() {
-        menuChecking.click();
-        newCheckingButton.click();
-        return new CheckingPage(driver);
     }
 }
