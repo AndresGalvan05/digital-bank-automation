@@ -1,5 +1,6 @@
 package scripts;
 
+import dataProviders.SavingsData;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -12,13 +13,16 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
+import pages.NewSavingsPage;
+import pages.ViewSavingsAccount;
 import utils.Constants;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
-public class LoginTest {
+public class newSavingsCreateAccountTest {
+
     private WebDriver driver;
 
     @BeforeTest
@@ -33,25 +37,32 @@ public class LoginTest {
         driver.get(Constants.urlBase);
     }
 
-    @Test(dataProvider = "login", dataProviderClass = dataProviders.LoginData.class)
-    public void testLogin(String username, String password, String name) {
-        String expectedTitle = "Dashboard";
-        String expectedWelcomeMessage = "Welcome " + name;
+    @Test(dataProvider = "account", dataProviderClass = SavingsData.class)
+
+    public void testSearchSavings(String name, String value) {
         String expectedUrl = "http://digitalbank.upcamp.io/bank/home";
-        String expectedLogOutMessage = "Success Logout completed.\n" + "×";
+        String expectedTitle = "New Savings Account";
+        String expectedSuccessfullyMessage = "Successfully created new Money Market account named " + name;
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.setUsernameAndPassword(username, password);
+        loginPage.setUsernameAndPassword(Constants.userAndy, Constants.passwordAndy);
+
         HomePage homePage = loginPage.clickLoginButton();
         assertEquals(homePage.getCurrentUrl(), expectedUrl);
-        assertEquals(homePage.getPageTitle(), expectedTitle);
-        assertEquals(homePage.getWelcomeMessage(), expectedWelcomeMessage);
 
+        NewSavingsPage newSavingsPage = new NewSavingsPage(driver);
+        newSavingsPage.saving();
+        newSavingsPage.savingMenu();
+        assertEquals(newSavingsPage.getPageTitle(), expectedTitle);
+        newSavingsPage.moneyMarketRadioBtn();
+        newSavingsPage.jointRadioBtn();
+        newSavingsPage.enterNameValueInput(name, value);
+
+        ViewSavingsAccount viewSavingsAccount = newSavingsPage.clickNewSavingsSubmitButton();
+        assertEquals(viewSavingsAccount.getNewAccountMessage(), expectedSuccessfullyMessage);
         takeScreenshot();
-
-        LoginPage newLoginPage = homePage.logout();
-        assertEquals(newLoginPage.getLogOutMessage(), expectedLogOutMessage);
-    }
+        homePage.logout();
+   }
 
     @AfterTest
     public void tearDown() {
