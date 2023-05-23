@@ -62,6 +62,7 @@ public class ViewSavingsSearchTest {
 
         LoginPage newLoginPage = homePage.logout();
         assertEquals(newLoginPage.getLogOutMessage(), expectedLogOutMessage);
+
    }
 
     @AfterTest
