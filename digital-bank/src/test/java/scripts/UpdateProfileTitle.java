@@ -10,16 +10,16 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import pages.CheckingPage;
 import pages.HomePage;
 import pages.LoginPage;
+import pages.ProfilePage;
 import utils.Constants;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
-public class NewCheckingResetButtonTest {
+public class UpdateProfileTitle {
     private WebDriver driver;
 
     @BeforeTest
@@ -34,31 +34,16 @@ public class NewCheckingResetButtonTest {
         driver.get(Constants.urlBase);
     }
 
-
-    @Test (dataProvider = "newChecking", dataProviderClass = dataProviders.NewCheckingData.class)
-    public void newCheckingResetButton(String nameAccount, String deposit) {
-    String inputVacio = "";
-
+    @Test
+    public void updateProfileTitle() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.setUsernameAndPassword(Constants.userAndres, Constants.passwordAndres);
         HomePage homePage = loginPage.clickLoginButton();
-       CheckingPage checkingPage = homePage.goToNewChecking();
-        checkingPage.completeFormNewChecking(nameAccount, deposit);
-        assertEquals(checkingPage.getAccountName(),nameAccount);
-        assertEquals(checkingPage.getDeposit(), deposit);
-
+        homePage.goTotMyProfile();
+        ProfilePage profilePage = new ProfilePage(driver);
+        profilePage.selectTitle();
         takeScreenshot();
-
-       checkingPage.resetForm();
-        assertEquals(checkingPage.getAccountName(), inputVacio);
-        assertEquals(checkingPage.getDeposit(), inputVacio);
-
-        takeScreenshot();
-
-        homePage.logout();
-
     }
-
 
     @AfterTest
     public void tearDown() {

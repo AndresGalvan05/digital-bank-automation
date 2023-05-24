@@ -24,6 +24,8 @@ public class HomePage extends BasePage {
     @FindBy(id = "new-checking-menu-item")
     private WebElement newCheckingButton;
 
+    @FindBy(linkText = "My Profile")
+    private WebElement myProfile;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -51,9 +53,18 @@ public class HomePage extends BasePage {
         return new LoginPage(driver);
     }
 
+    @Step("Go to New Checking")
     public CheckingPage goToNewChecking() {
         menuChecking.click();
         newCheckingButton.click();
         return new CheckingPage(driver);
     }
+
+    @Step("Go to My Profile")
+    public ProfilePage goTotMyProfile () {
+        avatar.click();
+        myProfile.click();
+        return new ProfilePage(driver);
+    }
+
 }
