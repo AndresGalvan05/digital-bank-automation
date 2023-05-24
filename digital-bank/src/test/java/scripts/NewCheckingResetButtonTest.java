@@ -51,7 +51,6 @@ public class NewCheckingResetButtonTest {
         CheckingPage checkingPage = new CheckingPage(driver);
         checkingPage.completeFormNewChecking(nameaccount, deposit);
         checkingPage.resetForm();
-
     }
 
 
