@@ -9,7 +9,6 @@ public class SavingsPage extends BasePage {
         super(driver);
     }
 
-
     @FindBy(id = "savings-menu")
     private WebElement savingsMenu;
 
@@ -19,8 +18,9 @@ public class SavingsPage extends BasePage {
     private WebElement pageTitle;
     @FindBy(xpath = "//input[@type='search']")
     private WebElement searchInput;
-    @FindBy(xpath = "//td[contains(text(),'845334106 (DPT) - CNP Dividend')]")
+    @FindBy(css = "#transactionTable > tbody > tr > td:nth-child(3)")
     private WebElement dividend;
+
     @Step("Click on menu Savings")
     public void clickOnSavingsMenu() {
         savingsMenu.click();
@@ -41,6 +41,7 @@ public class SavingsPage extends BasePage {
     public void submit() {
         searchInput.click();
     }
+
     @Step("Verify to match text search with the searched text")
     public String getDividendText() {
         return dividend.getText();

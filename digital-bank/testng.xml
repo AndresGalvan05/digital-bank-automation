@@ -5,8 +5,19 @@
     </suite-files>
 
     <suite-files>
+        <suite-file path="src/test/java/suites/newChecking.xml"/>
+    </suite-files>
+
+    <suite-files>
         <suite-file path="src/test/java/suites/savingsSearch.xml"/>
     </suite-files>
 
+    <suite-files>
+        <suite-file path="src/test/java/suites/newSavings.xml"/>
+    </suite-files>
+
+    <suite-files>
+        <suite-file path="src/test/java/suites/viewCheckingAccounts.xml"/>
+    </suite-files>
 </suite>
 

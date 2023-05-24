@@ -12,14 +12,15 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
-import pages.SavingsPage;
+import pages.NewSavingsPage;
+import pages.ViewSavingsPage;
 import utils.Constants;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
-public class ViewSavingsSearchTest {
+public class NewSavingsCreateAccountTest {
 
     private WebDriver driver;
 
@@ -35,26 +36,30 @@ public class ViewSavingsSearchTest {
         driver.get(Constants.urlBase);
     }
 
-    @Test(dataProvider = "search", dataProviderClass = dataProviders.SearchData.class)
-    public void testSearchSavings(String titleSavings ,String searchValue, String value) {
 
+    @Test(dataProvider = "newSavings", dataProviderClass = dataProviders.NewSavingsData.class)
+    public void NewSavingsTest(String accountName, String initialDeposit) {
+        String titleNewSavings= "Create Savings";
+        String titleViewSavings= "View Savings Accounts";
         LoginPage loginPage = new LoginPage(driver);
         loginPage.setUsernameAndPassword(Constants.userAndres, Constants.passwordAndres);
         HomePage homePage = loginPage.clickLoginButton();
 
-        SavingsPage savingsPage = new SavingsPage(driver);
-        savingsPage.clickOnSavingsMenu();
-        savingsPage.clickOnViewSavingsMenu();
-        assertEquals(titleSavings, savingsPage.getPageTitleText());
-        savingsPage.enterSearchValue(searchValue);
-        savingsPage.submit();
-        assertEquals(savingsPage.getDividendText(), value);
+        NewSavingsPage newSavingsPage = new NewSavingsPage(driver);
+        newSavingsPage.clickSavingsMenu();
+        newSavingsPage.newSavings();
+        assertEquals(newSavingsPage.pageTitle(),titleNewSavings);
+        newSavingsPage.clickStandardSavings();
+        newSavingsPage.clickIndividualAccount();
+        newSavingsPage.accountName(accountName);
+        newSavingsPage.initialDeposit(initialDeposit);
+        ViewSavingsPage viewSavingsPage= newSavingsPage.clickSubmitButton();
+        assertEquals(viewSavingsPage.pageTitle(),titleViewSavings );
 
         takeScreenshot();
 
         homePage.logout();
-   }
-
+    }
     @AfterTest
     public void tearDown() {
         try {
@@ -65,7 +70,6 @@ public class ViewSavingsSearchTest {
             System.out.println("Exception while closing the driver " + e.getMessage());
         }
     }
-
     @Attachment(type = "image/png")
     @AfterMethod(alwaysRun = true)
     public byte[] takeScreenshot() {
@@ -79,4 +83,7 @@ public class ViewSavingsSearchTest {
         }
         return image;
     }
+
+
+
 }

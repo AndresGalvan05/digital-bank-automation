@@ -10,17 +10,15 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import pages.NewCheckingPage;
 import pages.HomePage;
 import pages.LoginPage;
-import pages.SavingsPage;
+import pages.ViewCheckingPage;
 import utils.Constants;
-
 import java.time.Duration;
-
 import static org.testng.Assert.assertEquals;
 
-public class ViewSavingsSearchTest {
-
+public class NewCheckingCreateAccountTest {
     private WebDriver driver;
 
     @BeforeTest
@@ -35,25 +33,30 @@ public class ViewSavingsSearchTest {
         driver.get(Constants.urlBase);
     }
 
-    @Test(dataProvider = "search", dataProviderClass = dataProviders.SearchData.class)
-    public void testSearchSavings(String titleSavings ,String searchValue, String value) {
-
+    @Test(dataProvider = "newChecking", dataProviderClass = dataProviders.NewCheckingData.class)
+    public void NewCheckingTest(String accountName, String initialDeposit) {
+        String titleNewChecking= "Create Checking";
+        String titleViewChecking= "View Checking Accounts";
         LoginPage loginPage = new LoginPage(driver);
         loginPage.setUsernameAndPassword(Constants.userAndres, Constants.passwordAndres);
         HomePage homePage = loginPage.clickLoginButton();
 
-        SavingsPage savingsPage = new SavingsPage(driver);
-        savingsPage.clickOnSavingsMenu();
-        savingsPage.clickOnViewSavingsMenu();
-        assertEquals(titleSavings, savingsPage.getPageTitleText());
-        savingsPage.enterSearchValue(searchValue);
-        savingsPage.submit();
-        assertEquals(savingsPage.getDividendText(), value);
+        NewCheckingPage newCheckingPage = new NewCheckingPage(driver);
+        newCheckingPage.clickCheckingMenu();
+        newCheckingPage.clickNewChecking();
+        assertEquals(newCheckingPage.pageTitle(),titleNewChecking);
+        newCheckingPage.clickStandardChecking();
+        newCheckingPage.clickIndividualAccount();
+        newCheckingPage.accountName(accountName);
+        newCheckingPage.initialDeposit(initialDeposit);
+        ViewCheckingPage viewCheckingPage =  newCheckingPage.clickSubmitButton();
+        assertEquals(viewCheckingPage.pageTitle(),titleViewChecking );
 
         takeScreenshot();
 
         homePage.logout();
-   }
+
+    }
 
     @AfterTest
     public void tearDown() {
@@ -79,4 +82,5 @@ public class ViewSavingsSearchTest {
         }
         return image;
     }
+
 }

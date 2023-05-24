@@ -27,6 +27,7 @@ public class CheckingPage extends BasePage {
         super(driver);
     }
 
+    @Step("complete form new checking")
     public void completeFormNewChecking(String nameaccount, String deposit) {
         standardCheckingButton.click();
         individualButton.click();
@@ -38,8 +39,19 @@ public class CheckingPage extends BasePage {
         initialDeposit.sendKeys(deposit);
     }
 
+    @Step("reset form")
     public void resetForm() {
         resetButton.click();
+    }
+
+    @Step("Get account name")
+    public String getAccountName() {
+        return accountName.getAttribute("value");
+    }
+
+    @Step("Get deposit")
+    public String getDeposit() {
+        return initialDeposit.getAttribute("value");
     }
 
 }

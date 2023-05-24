@@ -12,15 +12,14 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
-import pages.SavingsPage;
+import pages.ProfilePage;
 import utils.Constants;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
-public class ViewSavingsSearchTest {
-
+public class UpdateProfileTitleTest {
     private WebDriver driver;
 
     @BeforeTest
@@ -35,25 +34,16 @@ public class ViewSavingsSearchTest {
         driver.get(Constants.urlBase);
     }
 
-    @Test(dataProvider = "search", dataProviderClass = dataProviders.SearchData.class)
-    public void testSearchSavings(String titleSavings ,String searchValue, String value) {
-
+    @Test
+    public void updateProfileTitle() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.setUsernameAndPassword(Constants.userAndres, Constants.passwordAndres);
         HomePage homePage = loginPage.clickLoginButton();
-
-        SavingsPage savingsPage = new SavingsPage(driver);
-        savingsPage.clickOnSavingsMenu();
-        savingsPage.clickOnViewSavingsMenu();
-        assertEquals(titleSavings, savingsPage.getPageTitleText());
-        savingsPage.enterSearchValue(searchValue);
-        savingsPage.submit();
-        assertEquals(savingsPage.getDividendText(), value);
-
+        homePage.goTotMyProfile();
+        ProfilePage profilePage = new ProfilePage(driver);
+        profilePage.selectTitle();
         takeScreenshot();
-
-        homePage.logout();
-   }
+    }
 
     @AfterTest
     public void tearDown() {

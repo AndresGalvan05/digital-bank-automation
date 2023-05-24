@@ -12,15 +12,14 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
-import pages.SavingsPage;
+import pages.ViewCheckingAccountsPage;
 import utils.Constants;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
-public class ViewSavingsSearchTest {
-
+public class ViewCheckingToggleButtonTest {
     private WebDriver driver;
 
     @BeforeTest
@@ -35,25 +34,31 @@ public class ViewSavingsSearchTest {
         driver.get(Constants.urlBase);
     }
 
-    @Test(dataProvider = "search", dataProviderClass = dataProviders.SearchData.class)
-    public void testSearchSavings(String titleSavings ,String searchValue, String value) {
+    @Test(dataProvider = "viewCheckingAccounts", dataProviderClass = dataProviders.ViewCheckingAccountsData.class)
+    public void testViewCheckingToggleButton(String accountGridNumber, String lastTransactionDate, String lastTransactionCategory,
+                                             String lastTransactionDescription, String lastTransactionAmount, String lastTransactionBalance) {
+        String expectedTitle = "View Checking Accounts";
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.setUsernameAndPassword(Constants.userAndres, Constants.passwordAndres);
+
         HomePage homePage = loginPage.clickLoginButton();
 
-        SavingsPage savingsPage = new SavingsPage(driver);
-        savingsPage.clickOnSavingsMenu();
-        savingsPage.clickOnViewSavingsMenu();
-        assertEquals(titleSavings, savingsPage.getPageTitleText());
-        savingsPage.enterSearchValue(searchValue);
-        savingsPage.submit();
-        assertEquals(savingsPage.getDividendText(), value);
+        ViewCheckingAccountsPage viewCheckingAccountsPage = homePage.clickViewCheckingAccountButton();
+        assertEquals(viewCheckingAccountsPage.getPageTitle(), expectedTitle);
+
+        viewCheckingAccountsPage.clickToggleButton(accountGridNumber);
+        viewCheckingAccountsPage.setLastTransactionData();
+        assertEquals(viewCheckingAccountsPage.getLastTransactionDate(), lastTransactionDate);
+        assertEquals(viewCheckingAccountsPage.getLastTransactionCategory(), lastTransactionCategory);
+        assertEquals(viewCheckingAccountsPage.getLastTransactionDescription(), lastTransactionDescription);
+        assertEquals(viewCheckingAccountsPage.getLastTransactionAmount(), lastTransactionAmount);
+        assertEquals(viewCheckingAccountsPage.getLastTransactionBalance(), lastTransactionBalance);
 
         takeScreenshot();
 
         homePage.logout();
-   }
+    }
 
     @AfterTest
     public void tearDown() {
